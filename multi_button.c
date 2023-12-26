@@ -37,6 +37,8 @@ void button_init(struct button* handle, uint8_t(*pin_level)(void), uint8_t activ
     handle->hal_button_Level = pin_level;
     handle->button_level = !active_level;
     handle->active_level = active_level;
+    handle->short_ticks = SHORT_TICKS;
+    handle->long_ticks = LONG_TICKS;
 }
 
 /**
@@ -49,6 +51,28 @@ void button_init(struct button* handle, uint8_t(*pin_level)(void), uint8_t activ
 void button_attach(struct button* handle, PressEvent event, BtnCallback cb)
 {
     handle->cb[event] = cb;
+}
+
+/**
+  * @brief  Attach the button adjust ticks
+  * @param  handle: the button handle strcut.
+  * @param  ticks: judge short ticks(unit:ms)
+  * @retval None
+  */
+void button_set_short_ticks(struct Button* handle, uint16_t ticks)
+{
+    handle->short_ticks = ticks / TICKS_INTERVAL;
+}
+
+/**
+  * @brief  Attach the button adjust long ticks
+  * @param  handle: the button handle strcut.
+  * @param  ticks: judge long ticks(unit:ms)
+  * @retval None
+  */
+void button_set_long_ticks(struct Button* handle, uint16_t ticks)
+{
+    handle->long_ticks = ticks / TICKS_INTERVAL;
 }
 
 /**
@@ -119,7 +143,7 @@ static void button_handler(struct button* handle)
             handle->ticks = 0;
             handle->state = 2;
         }
-        else if(handle->ticks > LONG_TICKS)
+        else if(handle->ticks > handle->long_ticks)
         {
             handle->event = (uint8_t)LONG_PRESS_START;
             EVENT_CB(LONG_PRESS_START);
@@ -140,7 +164,7 @@ static void button_handler(struct button* handle)
             handle->ticks = 0;
             handle->state = 3;
         }
-        else if(handle->ticks > SHORT_TICKS)
+        else if(handle->ticks > handle->short_ticks)
         {
             if(handle->repeat == 1)
             {
@@ -162,7 +186,7 @@ static void button_handler(struct button* handle)
             handle->event = (uint8_t)PRESS_UP;
             EVENT_CB(PRESS_UP);
 
-            if(handle->ticks < SHORT_TICKS)
+            if(handle->ticks < handle->short_ticks)
             {
                 handle->ticks = 0;
                 handle->state = 2;
@@ -172,7 +196,7 @@ static void button_handler(struct button* handle)
                 handle->state = 0;
             }
         }
-        else if(handle->ticks > SHORT_TICKS) // SHORT_TICKS < press down hold time < LONG_TICKS
+        else if(handle->ticks > handle->short_ticks) // SHORT_TICKS < press down hold time < LONG_TICKS
         {
             handle->state = 1;
         }
