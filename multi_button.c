@@ -35,7 +35,7 @@ void button_init(struct button* handle, uint8_t(*pin_level)(void), uint8_t activ
     memset(handle, 0, sizeof(struct button));
     handle->event = (uint8_t)NONE_PRESS;
     handle->hal_button_Level = pin_level;
-    handle->button_level = handle->hal_button_Level();
+    handle->button_level = !active_level;
     handle->active_level = active_level;
 }
 
