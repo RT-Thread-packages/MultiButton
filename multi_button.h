@@ -25,7 +25,9 @@ typedef enum {
     NONE_PRESS
 }PressEvent;
 
-typedef struct button {
+
+typedef struct button *button_t;
+struct button {
     uint16_t ticks;
     uint16_t short_ticks;
     uint16_t long_ticks;
@@ -37,21 +39,21 @@ typedef struct button {
     uint8_t  button_level : 1;
     uint8_t  (*hal_button_Level)(void);
     BtnCallback  cb[number_of_event];
-    struct button* next;
-}button;
+    button_t next;
+};
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-void button_init(struct button* handle, uint8_t(*pin_level)(void), uint8_t active_level);
-void button_attach(struct button* handle, PressEvent event, BtnCallback cb);
-PressEvent get_button_event(struct button* handle);
-int  button_start(struct button* handle);
-void button_stop(struct button* handle);
+void button_init(button_t handle, uint8_t(*pin_level)(void), uint8_t active_level);
+void button_attach(button_t handle, PressEvent event, BtnCallback cb);
+PressEvent get_button_event(button_t handle);
+int  button_start(button_t handle);
+void button_stop(button_t handle);
 void button_ticks(void);
-void button_set_short_ticks(struct button* handle, uint16_t ticks);
-void button_set_long_ticks(struct button* handle, uint16_t ticks);
+void button_set_short_ticks(button_t handle, uint16_t ticks);
+void button_set_long_ticks(button_t handle, uint16_t ticks);
 
 #ifdef __cplusplus
 }

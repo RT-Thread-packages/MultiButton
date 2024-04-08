@@ -21,7 +21,7 @@
 #define EVENT_CB(ev) if(handle->cb[ev]) handle->cb[ev]((void*)handle)
 #define PRESS_REPEAT_MAX_NUM  15 /*!< The maximum value of the repeat counter */
 
-static struct button* head_handle = NULL;
+static button_t head_handle = NULL;
 
 /**
   * @brief  Initializes the button struct handle.
@@ -30,7 +30,7 @@ static struct button* head_handle = NULL;
   * @param  active_level: pin pressed level.
   * @retval None
   */
-void button_init(struct button* handle, uint8_t(*pin_level)(void), uint8_t active_level)
+void button_init(button_t handle, uint8_t(*pin_level)(void), uint8_t active_level)
 {
     memset(handle, 0, sizeof(struct button));
     handle->event = (uint8_t)NONE_PRESS;
@@ -48,7 +48,7 @@ void button_init(struct button* handle, uint8_t(*pin_level)(void), uint8_t activ
   * @param  cb: callback function.
   * @retval None
   */
-void button_attach(struct button* handle, PressEvent event, BtnCallback cb)
+void button_attach(button_t handle, PressEvent event, BtnCallback cb)
 {
     handle->cb[event] = cb;
 }
@@ -59,7 +59,7 @@ void button_attach(struct button* handle, PressEvent event, BtnCallback cb)
   * @param  ticks: judge short ticks(unit:ms)
   * @retval None
   */
-void button_set_short_ticks(struct button* handle, uint16_t ticks)
+void button_set_short_ticks(button_t handle, uint16_t ticks)
 {
     handle->short_ticks = ticks / TICKS_INTERVAL;
 }
@@ -70,7 +70,7 @@ void button_set_short_ticks(struct button* handle, uint16_t ticks)
   * @param  ticks: judge long ticks(unit:ms)
   * @retval None
   */
-void button_set_long_ticks(struct button* handle, uint16_t ticks)
+void button_set_long_ticks(button_t handle, uint16_t ticks)
 {
     handle->long_ticks = ticks / TICKS_INTERVAL;
 }
@@ -80,7 +80,7 @@ void button_set_long_ticks(struct button* handle, uint16_t ticks)
   * @param  handle: the button handle struct.
   * @retval button event.
   */
-PressEvent get_button_event(struct button* handle)
+PressEvent get_button_event(button_t handle)
 {
     return (PressEvent)(handle->event);
 }
@@ -90,7 +90,7 @@ PressEvent get_button_event(struct button* handle)
   * @param  handle: the button handle struct.
   * @retval None
   */
-static void button_handler(struct button* handle)
+static void button_handler(button_t handle)
 {
     uint8_t read_gpio_level = handle->hal_button_Level();
 
@@ -231,9 +231,9 @@ static void button_handler(struct button* handle)
   * @param  handle: target handle struct.
   * @retval 0: succeed. -1: already exist.
   */
-int button_start(struct button* handle)
+int button_start(button_t handle)
 {
-    struct button* target = head_handle;
+    button_t target = head_handle;
 
     while(target)
     {
@@ -256,13 +256,13 @@ int button_start(struct button* handle)
   * @param  handle: target handle struct.
   * @retval None
   */
-void button_stop(struct button* handle)
+void button_stop(button_t handle)
 {
-    struct button** curr;
+    button_t* curr;
 
     for(curr = &head_handle; *curr;)
     {
-        struct button* entry = *curr;
+        button_t entry = *curr;
 
         if (entry == handle)
         {
@@ -283,7 +283,7 @@ void button_stop(struct button* handle)
   */
 void button_ticks(void)
 {
-    struct button* target;
+    button_t target;
 
     for(target = head_handle; target != NULL; target = target->next)
     {

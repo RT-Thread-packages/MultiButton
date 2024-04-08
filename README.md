@@ -47,19 +47,21 @@ MultiButton 使用C语言实现，基于面向对象方式设计思路，每个�
 
 ```c
 struct button {
-	uint16_t ticks;
-	uint8_t  repeat: 4;
-	uint8_t  event : 4;
-	uint8_t  state : 3;
-	uint8_t  debounce_cnt : 3; 
-	uint8_t  active_level : 1;
-	uint8_t  button_level : 1;
-	uint8_t  (*hal_button_Level)(void);
-	BtnCallback  cb[number_of_event];
-	struct button* next;
+    uint16_t ticks;
+    uint16_t short_ticks;
+    uint16_t long_ticks;
+    uint8_t  repeat       : 4;
+    uint8_t  event        : 4;
+    uint8_t  state        : 3;
+    uint8_t  debounce_cnt : 3;
+    uint8_t  active_level : 1;
+    uint8_t  button_level : 1;
+    uint8_t  (*hal_button_Level)(void);
+    BtnCallback  cb[number_of_event];
+    button_t next;
 };
 ```
-这样每个按键使用单向链表相连，依次进入 button_handler(struct button* handle) 状态机处理，所以每个按键的状态彼此独立。
+这样每个按键使用单向链表相连，依次进入 button_handler(button_t handle) 状态机处理，所以每个按键的状态彼此独立。
 
 
 ## 按键事件
@@ -78,7 +80,7 @@ LONG_PRESS_HOLD | 长按期间一直触发
 ## Examples
 
 ```c
-#include "button.h"
+#include <multi_button.h>
 
 struct button btn1;
 

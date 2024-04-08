@@ -1,6 +1,6 @@
 #include <rtthread.h>
 #include <rtdevice.h>
-#include "multi_button.h"
+#include <multi_button.h>
 
 static struct button btn;
 

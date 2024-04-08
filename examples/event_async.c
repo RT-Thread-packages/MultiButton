@@ -1,6 +1,6 @@
 #include <rtthread.h>
 #include <rtdevice.h>
-#include "multi_button.h"
+#include <multi_button.h>
 
 static struct button btn;
 
@@ -15,7 +15,7 @@ void button_callback(void *btn)
 {
     uint32_t btn_event_val;
 
-    btn_event_val = get_button_event((struct button *)btn);
+    btn_event_val = get_button_event((button_t)btn);
 
     switch(btn_event_val)
     {
