@@ -59,7 +59,7 @@ void button_attach(struct button* handle, PressEvent event, BtnCallback cb)
   * @param  ticks: judge short ticks(unit:ms)
   * @retval None
   */
-void button_set_short_ticks(struct Button* handle, uint16_t ticks)
+void button_set_short_ticks(struct button* handle, uint16_t ticks)
 {
     handle->short_ticks = ticks / TICKS_INTERVAL;
 }
@@ -70,7 +70,7 @@ void button_set_short_ticks(struct Button* handle, uint16_t ticks)
   * @param  ticks: judge long ticks(unit:ms)
   * @retval None
   */
-void button_set_long_ticks(struct Button* handle, uint16_t ticks)
+void button_set_long_ticks(struct button* handle, uint16_t ticks)
 {
     handle->long_ticks = ticks / TICKS_INTERVAL;
 }

@@ -9,7 +9,7 @@ MultiButton的作者是0x1abin, github地址: https://github.com/0x1abin/MultiBu
 1.先申请一个按键结构
 
 ```c
-struct Button button1;
+struct button button1;
 ```
 2.初始化按键对象，绑定按键的GPIO电平读取接口**read_button_pin()** ，后一个参数设置有效触发电平
 
@@ -46,7 +46,7 @@ while(1) {
 MultiButton 使用C语言实现，基于面向对象方式设计思路，每个按键对象单独用一份数据结构管理：
 
 ```c
-struct Button {
+struct button {
 	uint16_t ticks;
 	uint8_t  repeat: 4;
 	uint8_t  event : 4;
@@ -56,10 +56,10 @@ struct Button {
 	uint8_t  button_level : 1;
 	uint8_t  (*hal_button_Level)(void);
 	BtnCallback  cb[number_of_event];
-	struct Button* next;
+	struct button* next;
 };
 ```
-这样每个按键使用单向链表相连，依次进入 button_handler(struct Button* handle) 状态机处理，所以每个按键的状态彼此独立。
+这样每个按键使用单向链表相连，依次进入 button_handler(struct button* handle) 状态机处理，所以每个按键的状态彼此独立。
 
 
 ## 按键事件
@@ -80,7 +80,7 @@ LONG_PRESS_HOLD | 长按期间一直触发
 ```c
 #include "button.h"
 
-struct Button btn1;
+struct button btn1;
 
 uint8_t read_button1_GPIO() 
 {

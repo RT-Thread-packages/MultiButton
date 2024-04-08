@@ -50,8 +50,8 @@ PressEvent get_button_event(struct button* handle);
 int  button_start(struct button* handle);
 void button_stop(struct button* handle);
 void button_ticks(void);
-void button_set_short_ticks(struct Button* handle, uint16_t ticks);
-void button_set_long_ticks(struct Button* handle, uint16_t ticks);
+void button_set_short_ticks(struct button* handle, uint16_t ticks);
+void button_set_long_ticks(struct button* handle, uint16_t ticks);
 
 #ifdef __cplusplus
 }
