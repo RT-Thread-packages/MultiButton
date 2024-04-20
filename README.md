@@ -123,3 +123,7 @@ int main()
 ## 状态图
 
 ![states.png](states.png)
+
+## 仓库
+
+https://github.com/RT-Thread-packages/MultiButton
